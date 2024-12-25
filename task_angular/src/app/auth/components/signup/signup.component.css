@@ -1,0 +1,61 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  mat-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+
+    @media screen and (max-width: 500px) {
+      max-width: 10px;
+    }
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-card-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #673ab7;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  @media (max-width: 500px) {
+    mat-card-title {
+      font-size: 20px;
+    }
+
+    mat-form-field {
+      margin-bottom: 10px;
+    }
+  }
+
+  .error-snakbar {
+    background-color: #d32f2f !important;
+  }
+
+  mat-icon {
+    display: inline-block;
+    line-height: 0;
+    vertical-align: middle;
+    font-size: 24px;
+}
+
