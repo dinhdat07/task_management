@@ -10,23 +10,20 @@ import com.tudee.task_springboot.services.auth.AuthService;
 import com.tudee.task_springboot.services.jwt.UserService;
 import com.tudee.task_springboot.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AuthController {
     private final AuthService authService;
 
@@ -59,7 +56,11 @@ public class AuthController {
                     authenticationRequest.getEmail(),
                     authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Incorrect email or password");
+            AuthenticationResponse badResponse = new AuthenticationResponse();
+            badResponse.setJwt(null);
+            badResponse.setUserId(null);
+            badResponse.setUserRole(null);
+            return badResponse;
         }
 
         final UserDetails userDetails = userService.userDetailService().loadUserByUsername(authenticationRequest.getEmail());

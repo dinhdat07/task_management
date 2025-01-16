@@ -9,7 +9,7 @@
     width: 100%;
     max-width: 400px;
     padding: 20px;
-
+  
     @media screen and (max-width: 500px) {
       max-width: 10px;
     }
@@ -22,7 +22,7 @@
     margin-bottom: 20px;
     color: #673ab7;
   }
-
+  
   form {
     display: flex;
     flex-direction: column;
@@ -42,69 +42,21 @@
     mat-card-title {
       font-size: 20px;
     }
-
+  
     mat-form-field {
       margin-bottom: 10px;
     }
   }
-
+  
   .error-snakbar {
     background-color: #d32f2f !important;
   }
-
+  
   mat-icon {
     display: inline-block;
     line-height: 0;
     vertical-align: middle;
     font-size: 24px;
-}
-
-
-
-.signup-container {
-  display: flex;
-  height: 100vh;
-}
-
-
-.signup-left {
-  flex: 1;
-  background: linear-gradient(to bottom right, #673ab7, #ffc107); /* Deep Purple to Amber */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  text-align: center;
-  color: white; /* Ensure text is visible on the gradient */
-}
-
-.signup-left .logo {
-  max-width: 150px;
-  margin-bottom: 1rem;
-}
-
-.signup-left h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.signup-left p {
-  font-size: 1rem;
-  margin: 0 1rem;
-}
-
-
-.signup-right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  background-color: #ffffff;
-}
-
-mat-card {
-  width: 100%;
-  max-width: 400px;
-}
+  }
+  
+  

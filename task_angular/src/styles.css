@@ -1,1 +1,14 @@
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Optional: Prevents scrollbars if content fits */
+}
+
+* {
+    box-sizing: border-box; /* Ensure padding/margin doesn't affect width/height */
+}
+
