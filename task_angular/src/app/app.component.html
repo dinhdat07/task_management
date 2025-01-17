@@ -1,16 +1,10 @@
 <div *ngIf="!isEmployeeLoggedIn && !isAdminLoggedIn" class="navbar-container">
-  <mat-toolbar class="navbar">
-    <!-- Left Section -->
-    <div class="navbar-left">
-      Tudu
-    </div>
-
-    <!-- Right Section -->
-    <div class="navbar-right">
+    <mat-toolbar color="primary" class="navbar">
+      <span class="navbar-brand">Tudu</span>
+      <span class="spacer"></span>
       <button mat-button routerLink="/signup" routerLinkActive="active">Register</button>
       <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
-    </div>
-  </mat-toolbar>
+    </mat-toolbar>
 </div>
 
 

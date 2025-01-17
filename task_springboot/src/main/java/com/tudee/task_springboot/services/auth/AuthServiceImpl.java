@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService{
         user.setPassword(new BCryptPasswordEncoder().encode(signUpRequest.getPassword()));
         user.setUserRole(UserRole.EMPLOYEE);
         User createdUser = userRepository.save(user);
-        return createdUser.getUserDto();
+        return createdUser.getUserDTO();
     }
 
     @Override

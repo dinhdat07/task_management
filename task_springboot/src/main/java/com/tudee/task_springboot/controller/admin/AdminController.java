@@ -1,12 +1,11 @@
 package com.tudee.task_springboot.controller.admin;
 
+import com.tudee.task_springboot.dto.TaskDTO;
+import com.tudee.task_springboot.entities.Task;
 import com.tudee.task_springboot.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +17,17 @@ public class AdminController {
     @GetMapping("/users")
     public ResponseEntity<?> getUsers() {
         return ResponseEntity.ok(adminService.getUsers());
+    }
+
+    @PostMapping("/task")
+    public ResponseEntity<TaskDTO> postTask(@RequestBody TaskDTO taskDTO) {
+        Task createdTask = adminService.postTask(taskDTO);
+        TaskDTO createdTaskDTO = createdTask.getTaskDTO();
+        return ResponseEntity.status(201).body(createdTaskDTO);
+    }
+
+    @GetMapping("/tasks")
+    public ResponseEntity<?> getAllTasks() {
+        return ResponseEntity.ok(adminService.getAllTasks());
     }
 }
