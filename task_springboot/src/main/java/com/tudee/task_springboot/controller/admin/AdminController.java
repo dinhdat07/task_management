@@ -21,8 +21,7 @@ public class AdminController {
 
     @PostMapping("/task")
     public ResponseEntity<TaskDTO> postTask(@RequestBody TaskDTO taskDTO) {
-        Task createdTask = adminService.postTask(taskDTO);
-        TaskDTO createdTaskDTO = createdTask.getTaskDTO();
+        TaskDTO createdTaskDTO = adminService.postTask(taskDTO);
         return ResponseEntity.status(201).body(createdTaskDTO);
     }
 
@@ -30,4 +29,25 @@ public class AdminController {
     public ResponseEntity<?> getAllTasks() {
         return ResponseEntity.ok(adminService.getAllTasks());
     }
+
+    @DeleteMapping("/task/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        adminService.deleteTask(id);
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/task/{id}")
+    public ResponseEntity<TaskDTO> getTask(@PathVariable Long id) {
+        return ResponseEntity.ok(adminService.getTask(id));
+    }
+
+    @PutMapping("/task/{id}")
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDTO) {
+        TaskDTO updatedTask = adminService.updateTask(id, taskDTO);
+        if (updatedTask == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updatedTask);
+
+    }
+
+
 }

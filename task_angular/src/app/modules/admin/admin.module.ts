@@ -15,11 +15,13 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { UpdateTaskComponent } from './components/update-task/update-task.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    PostTaskComponent
+    PostTaskComponent,
+    UpdateTaskComponent
   ],  
   imports: [
     CommonModule,
