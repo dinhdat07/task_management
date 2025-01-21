@@ -14,6 +14,7 @@ export class PostTaskComponent {
   taskForm!: FormGroup;
   listOfEmployees: any[] = [];
   listOfPriorities: any[] = ["LOW", "MEDIUM", "HIGH"];
+  listOfTaskStatus: any[] = ["PENDING" , "INPROGRESS" , "COMPLETED", "DEFERRED", "CANCELLED"];
 
   constructor(private adminService: AdminService,
     private fb: FormBuilder,

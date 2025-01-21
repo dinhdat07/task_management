@@ -1,3 +1,10 @@
+<form class="search-form" [formGroup]="searchForm">
+  <mat-form-field appearance="outline" class="search-input">
+    <mat-label>Search</mat-label>
+    <input matInput type="text" formControlName="title" (input)="searchTasks()">
+  </mat-form-field>
+</form>
+
 <div class="task-list">
     <mat-card class="task-card" *ngFor="let task of listOfTasks">
       <div class="task-details">

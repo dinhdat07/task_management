@@ -11,6 +11,7 @@ import com.tudee.task_springboot.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,6 +83,15 @@ public class AdminServiceImpl implements AdminService {
             return taskRepository.save(existingTask).getTaskDTO();
         }
         return null;
+    }
+
+    @Override
+    public List<TaskDTO> searchTaskByTitle(String title) {
+        return taskRepository.findAllByTitleContaining(title)
+                .stream()
+                .sorted(Comparator.comparing(Task::getDueDate).reversed())
+                .map(Task::getTaskDTO)
+                .collect(Collectors.toList());
     }
 
     private TaskStatus mapStringToTaskStatus(String status) {

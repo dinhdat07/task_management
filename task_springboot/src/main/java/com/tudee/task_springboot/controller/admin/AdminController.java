@@ -49,5 +49,9 @@ public class AdminController {
 
     }
 
+    @GetMapping("/tasks/search")
+    public ResponseEntity<?> searchTaskByTitle(@RequestParam String title) {
+        return ResponseEntity.ok(adminService.searchTaskByTitle(title));
+    }
 
 }

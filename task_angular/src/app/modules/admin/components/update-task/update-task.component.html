@@ -37,6 +37,17 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Priority</mat-label>
+            <mat-select formControlName="status" name="status">
+                <mat-option *ngFor="let s of listOfTaskStatus" [value]="s">
+                    {{s}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="updateTaskForm.get('status')?.hasError('required')">
+                Task status is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
             <mat-label>Employee</mat-label>
             <mat-select formControlName="employeeId" name="employeeId">
                 <mat-option *ngFor="let employee of listOfEmployees" [value]="employee.id">
