@@ -33,7 +33,7 @@ export class UpdateTaskComponent {
       description: [null, [Validators.required]],
       dueDate: [null, [Validators.required]],
       priority: [null, [Validators.required]],
-      status: [null, [Validators.required]]
+      taskStatus: [null, [Validators.required]]
     });
   }
 

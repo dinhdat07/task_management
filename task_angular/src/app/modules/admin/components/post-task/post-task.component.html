@@ -37,8 +37,8 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Priority</mat-label>
-            <mat-select formControlName="status" name="status">
+            <mat-label>Task Status</mat-label>
+            <mat-select formControlName="taskStatus" name="taskStatus">
                 <mat-option *ngFor="let s of listOfTaskStatus" [value]="s">
                     {{s}}
                 </mat-option>

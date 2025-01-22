@@ -27,7 +27,8 @@ export class PostTaskComponent {
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
       dueDate: [null, [Validators.required]],
-      priority: [null, [Validators.required]]
+      priority: [null, [Validators.required]],
+      taskStatus: [null, [Validators.required]]
     });
   }
   

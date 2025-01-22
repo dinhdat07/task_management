@@ -46,7 +46,6 @@ public class AdminController {
         TaskDTO updatedTask = adminService.updateTask(id, taskDTO);
         if (updatedTask == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(updatedTask);
-
     }
 
     @GetMapping("/tasks/search")

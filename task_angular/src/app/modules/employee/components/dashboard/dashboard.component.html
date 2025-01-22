@@ -1,1 +1,47 @@
-<p>dashboard works!</p>
+<form class="search-form" [formGroup]="searchForm">
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-label>Search</mat-label>
+      <input matInput type="text" formControlName="title" (input)="searchTasks()">
+    </mat-form-field>
+  </form>
+  
+  <div class="task-list">
+      <mat-card class="task-card" *ngFor="let task of listOfTasks">
+        <div class="task-details">
+          <h2 class="task-name">{{ task.title }}</h2>
+          <p class="task-description">{{ task.description }}</p>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="task-info">
+          <div class="info-row">
+            <span class="info-label">Due Date:</span>
+            <span class="info-value">{{ task.dueDate | date: 'MMM d, y' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Employee:</span>
+            <span class="info-value">{{ task.employeeName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Priority:</span>
+            <span class="info-value">{{ task.priority }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Status:</span>
+            <span class="info-value">{{ task.taskStatus }}</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+  
+        <div class="actions">
+          <button mat-icon-button color="primary" class="update-button" [matMenuTriggerFor]="statusMenu">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <mat-menu #statusMenu="matMenu">
+            <button mat-menu-item (click)="updateTaskStatus(task.id, 'INPROGRESS')">INPROGRESS</button>
+            <button mat-menu-item (click)="updateTaskStatus(task.id, 'COMPLETED')">COMPLETED</button>
+          </mat-menu>
+        </div>
+  
+      </mat-card>
+  </div>
+    
