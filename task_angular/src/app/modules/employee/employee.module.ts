@@ -6,11 +6,13 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DemoAngularMaterialModule } from '../../DemoAngularMaterialModule';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ViewTaskComponent } from './components/view-task/view-task.component';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    ViewTaskComponent
   ],
   imports: [
     CommonModule,

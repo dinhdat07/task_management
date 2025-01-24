@@ -1,5 +1,6 @@
 package com.tudee.task_springboot.controller.employee;
 
+import com.tudee.task_springboot.dto.CommentDTO;
 import com.tudee.task_springboot.dto.TaskDTO;
 import com.tudee.task_springboot.services.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,20 @@ public class EmployeeController {
         return ResponseEntity.ok(updatedTask);
     }
 
+    @GetMapping("/task/{id}")
+    public ResponseEntity<TaskDTO> getTask(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getTask(id));
+    }
+
+    @PostMapping("/task/comment/{taskId}")
+    public ResponseEntity<?> postComment(@PathVariable Long taskId, @RequestParam String content) {
+        CommentDTO createdCommentDTO = employeeService.postComment(taskId, content);
+        return ResponseEntity.status(201).body(createdCommentDTO);
+    }
+
+    @GetMapping("/task/comments/{taskId}")
+    public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Long taskId) {
+        return ResponseEntity.ok(employeeService.getComments(taskId));
+    }
 
 }

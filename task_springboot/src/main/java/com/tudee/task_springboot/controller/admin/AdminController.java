@@ -1,11 +1,14 @@
 package com.tudee.task_springboot.controller.admin;
 
+import com.tudee.task_springboot.dto.CommentDTO;
 import com.tudee.task_springboot.dto.TaskDTO;
 import com.tudee.task_springboot.entities.Task;
 import com.tudee.task_springboot.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,5 +55,18 @@ public class AdminController {
     public ResponseEntity<?> searchTaskByTitle(@RequestParam String title) {
         return ResponseEntity.ok(adminService.searchTaskByTitle(title));
     }
+
+    @PostMapping("/task/comment/{taskId}")
+    public ResponseEntity<?> postComment(@PathVariable Long taskId, @RequestParam String content) {
+        CommentDTO createdCommentDTO = adminService.postComment(taskId, content);
+        return ResponseEntity.status(201).body(createdCommentDTO);
+    }
+
+    @GetMapping("/task/comments/{taskId}")
+    public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Long taskId) {
+        return ResponseEntity.ok(adminService.getComments(taskId));
+    }
+
+
 
 }

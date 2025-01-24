@@ -1,17 +1,23 @@
 package com.tudee.task_springboot.services.admin;
 
+import com.tudee.task_springboot.dto.CommentDTO;
 import com.tudee.task_springboot.dto.TaskDTO;
 import com.tudee.task_springboot.dto.UserDto;
+import com.tudee.task_springboot.entities.Comment;
 import com.tudee.task_springboot.entities.Task;
 import com.tudee.task_springboot.entities.User;
 import com.tudee.task_springboot.enums.TaskStatus;
 import com.tudee.task_springboot.enums.UserRole;
+import com.tudee.task_springboot.repositories.CommentRepository;
 import com.tudee.task_springboot.repositories.TaskRepository;
 import com.tudee.task_springboot.repositories.UserRepository;
+import com.tudee.task_springboot.utils.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +27,8 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final CommentRepository commentRepository;
+    private final JwtUtil jwtUtil;
 
     public List<UserDto> getUsers() {
         return userRepository.findAll()
@@ -94,6 +102,33 @@ public class AdminServiceImpl implements AdminService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<CommentDTO> getComments(Long taskId) {
+        return commentRepository.findAllByTaskId(taskId)
+                .stream()
+                .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
+                .map(Comment::getCommentDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    public CommentDTO postComment(Long taskId, String content) {
+        User user = jwtUtil.getLoggedInUser();
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+
+        if (optionalTask.isPresent() && user != null) {
+            Comment comment = new Comment();
+            comment.setTask(optionalTask.get());
+            comment.setUser(user);
+            comment.setCreatedAt(new Date());
+            comment.setContent(content);
+            commentRepository.save(comment);
+            return comment.getCommentDTO();
+        }
+
+        throw new EntityNotFoundException("User or Task not found");
+    }
+
     private TaskStatus mapStringToTaskStatus(String status) {
         return switch (status) {
             case "PENDING" -> TaskStatus.PENDING;
@@ -103,5 +138,7 @@ public class AdminServiceImpl implements AdminService {
             default -> TaskStatus.CANCELLED;
         };
     }
+
+
 
 }

@@ -16,12 +16,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { UpdateTaskComponent } from './components/update-task/update-task.component';
+import { ViewTaskComponent } from './components/view-task/view-task.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     PostTaskComponent,
-    UpdateTaskComponent
+    UpdateTaskComponent,
+    ViewTaskComponent
   ],  
   imports: [
     CommonModule,

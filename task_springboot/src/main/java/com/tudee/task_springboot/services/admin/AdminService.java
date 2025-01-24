@@ -1,5 +1,6 @@
 package com.tudee.task_springboot.services.admin;
 
+import com.tudee.task_springboot.dto.CommentDTO;
 import com.tudee.task_springboot.dto.TaskDTO;
 import com.tudee.task_springboot.dto.UserDto;
 
@@ -13,4 +14,6 @@ public interface AdminService {
     TaskDTO getTask(Long id);
     TaskDTO updateTask(Long id, TaskDTO taskDTO);
     List<TaskDTO> searchTaskByTitle(String title);
+    List<CommentDTO> getComments(Long taskId);
+    CommentDTO postComment(Long taskId, String content);
 }
