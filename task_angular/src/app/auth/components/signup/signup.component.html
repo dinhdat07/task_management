@@ -1,137 +1,250 @@
-<!-- <div class="container">
-    <mat-card>
-        <mat-card-title>Sign Up</mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="signUpForm">
-                <mat-form-field appearance="outline">
-                    <mat-label>Name</mat-label>
-                    <input matInput placeholder="Name" formControlName="name" required>
-                    <mat-error *ngIf="signUpForm.get('name')?.invalid && signUpForm.get('name')?.touched">
-                        Please enter a valid name
-                    </mat-error>
-                </mat-form-field>
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <!-- Signup Card -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 space-y-8 border border-gray-200">
+      <!-- Header -->
+      <div class="text-center">
+        <div class="mx-auto h-16 w-16 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+          <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
+        <p class="text-gray-600">Join us today and get started</p>
+      </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput placeholder="Email" formControlName="email" required>
-                    <mat-error *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
-                        Please enter a valid email
-                    </mat-error>
-                </mat-form-field>
+      <!-- Form -->
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Name Field -->
+        <div class="space-y-2">
+          <label for="name" class="block text-sm font-semibold text-gray-700">
+            Full Name
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="Enter your full name"
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 bg-gray-50 focus:bg-white"
+              [class.border-red-500]="nameErrors"
+              [class.focus:ring-red-500]="nameErrors"
+              [class.bg-red-50]="nameErrors"
+            >
+          </div>
+          <div *ngIf="nameErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ nameErrors }}
+          </div>
+        </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input matInput placeholder="Password" formControlName="password" type="password" required>
-                    <mat-error *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
-                        Password must be at least 8 characters long.
-                    </mat-error>
-                </mat-form-field>
-  
-                <mat-form-field appearance="outline">
-                    <mat-label>Confirm Password</mat-label>
-                    <input 
-                    matInput 
-                    placeholder="Confirm Password" 
-                    formControlName="confirmPassword" 
-                    type='password' 
-                    required>
-                    <mat-error *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched">
-                    Passwords do not match.
-                    </mat-error>
-                </mat-form-field>
+        <!-- Email Field -->
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-semibold text-gray-700">
+            Email Address
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+              </svg>
+            </div>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 bg-gray-50 focus:bg-white"
+              [class.border-red-500]="emailErrors"
+              [class.focus:ring-red-500]="emailErrors"
+              [class.bg-red-50]="emailErrors"
+            >
+          </div>
+          <div *ngIf="emailErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ emailErrors }}
+          </div>
+        </div>
 
-                <button mat-raised-button color="primary" type="submit" [disabled]="signUpForm.invalid" 
-                (click)="onSubmit()">Sign Up</button>
-  
-            </form>
+        <!-- Password Field -->
+        <div class="space-y-2">
+          <label for="password" class="block text-sm font-semibold text-gray-700">
+            Password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Create a password"
+              class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 bg-gray-50 focus:bg-white"
+              [class.border-red-500]="passwordErrors"
+              [class.focus:ring-red-500]="passwordErrors"
+              [class.bg-red-50]="passwordErrors"
+            >
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+            >
+              <svg *ngIf="!showPassword" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              <svg *ngIf="showPassword" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Password Strength Indicator -->
+          <div *ngIf="signUpForm.get('password')?.value" class="mt-2">
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span class="text-gray-600">Password strength:</span>
+              <span [class]="passwordStrength.color" class="font-medium">{{ passwordStrength.label }}</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                class="h-2 rounded-full transition-all duration-300"
+                [class.bg-red-500]="passwordStrength.strength <= 2"
+                [class.bg-yellow-500]="passwordStrength.strength === 3"
+                [class.bg-blue-500]="passwordStrength.strength === 4"
+                [class.bg-green-500]="passwordStrength.strength === 5"
+                [style.width.%]="(passwordStrength.strength / 5) * 100"
+              ></div>
+            </div>
+          </div>
 
-        </mat-card-content>
+          <div *ngIf="passwordErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ passwordErrors }}
+          </div>
+        </div>
 
-    </mat-card>
-</div> -->
+        <!-- Confirm Password Field -->
+        <div class="space-y-2">
+          <label for="confirmPassword" class="block text-sm font-semibold text-gray-700">
+            Confirm Password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="Confirm your password"
+              class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 bg-gray-50 focus:bg-white"
+              [class.border-red-500]="confirmPasswordErrors"
+              [class.focus:ring-red-500]="confirmPasswordErrors"
+              [class.bg-red-50]="confirmPasswordErrors"
+              [class.border-green-500]="!confirmPasswordErrors && signUpForm.get('confirmPassword')?.value && signUpForm.get('password')?.value === signUpForm.get('confirmPassword')?.value"
+              [class.bg-green-50]="!confirmPasswordErrors && signUpForm.get('confirmPassword')?.value && signUpForm.get('password')?.value === signUpForm.get('confirmPassword')?.value"
+            >
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+            >
+              <svg *ngIf="!showConfirmPassword" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              <svg *ngIf="showConfirmPassword" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+              </svg>
+            </button>
+          </div>
+          <div *ngIf="confirmPasswordErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ confirmPasswordErrors }}
+          </div>
+          <div *ngIf="!confirmPasswordErrors && signUpForm.get('confirmPassword')?.value && signUpForm.get('password')?.value === signUpForm.get('confirmPassword')?.value" class="flex items-center text-sm text-green-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            Passwords match
+          </div>
+        </div>
 
+        <!-- Terms and Conditions -->
+        <div class="flex items-start space-x-3">
+          <input
+            id="terms"
+            type="checkbox"
+            required
+            class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1 transition-colors"
+          >
+          <label for="terms" class="text-sm text-gray-700 leading-relaxed">
+            I agree to the 
+            <a href="#" class="text-purple-600 hover:text-purple-500 font-medium">Terms of Service</a> 
+            and 
+            <a href="#" class="text-purple-600 hover:text-purple-500 font-medium">Privacy Policy</a>
+          </label>
+        </div>
 
-<div class="signup-container">
-  <!-- Left Section -->
-  <div class="signup-left">
-    <div class="branding">
-      <img src="assets/logo.png" alt="Brand Logo" class="logo" />
-      <h1>Welcome to Our Platform</h1>
-      <p>Your journey starts here. Sign up to explore more!</p>
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="signUpForm.invalid || isLoading"
+          class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3.5 px-6 rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+        >
+          <span *ngIf="!isLoading" class="flex items-center justify-center">
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+            Create Account
+          </span>
+          <span *ngIf="isLoading" class="flex items-center justify-center">
+            <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Creating Account...
+          </span>
+        </button>
+      </form>
+
+      <!-- Sign In Link -->
+      <div class="text-center pt-4">
+        <p class="text-sm text-gray-600">
+          Already have an account?
+          <a href="/login" class="font-semibold text-purple-600 hover:text-purple-500 ml-1 transition-colors">
+            Sign in here
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-8">
+      <p class="text-xs text-gray-500">
+        By creating an account, you agree to our 
+        <a href="#" class="text-purple-600 hover:text-purple-500">Terms of Service</a> 
+        and 
+        <a href="#" class="text-purple-600 hover:text-purple-500">Privacy Policy</a>
+      </p>
     </div>
   </div>
-
-  <!-- Right Section -->
-  <div class="signup-right">
-    <mat-card>
-      <mat-card-title>Sign Up</mat-card-title>
-      <mat-card-content>
-        <form [formGroup]="signUpForm">
-          <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" formControlName="name" required />
-            <mat-error
-              *ngIf="signUpForm.get('name')?.invalid && signUpForm.get('name')?.touched"
-            >
-              Please enter a valid name
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" formControlName="email" required />
-            <mat-error
-              *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched"
-            >
-              Please enter a valid email
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              placeholder="Password"
-              formControlName="password"
-              type="password"
-              required
-            />
-            <mat-error
-              *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched"
-            >
-              Password must be at least 8 characters long.
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Confirm Password</mat-label>
-            <input
-              matInput
-              placeholder="Confirm Password"
-              formControlName="confirmPassword"
-              type="password"
-              required
-            />
-            <mat-error
-              *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched"
-            >
-              Passwords do not match.
-            </mat-error>
-          </mat-form-field>
-
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="signUpForm.invalid"
-            (click)="onSubmit()"
-          >
-            Sign Up
-          </button>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
 </div>
-
-  

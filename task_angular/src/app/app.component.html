@@ -1,31 +1,275 @@
-<div *ngIf="!isEmployeeLoggedIn && !isAdminLoggedIn" class="navbar-container">
-    <mat-toolbar color="primary" class="navbar">
-      <span class="navbar-brand">Tudu</span>
-      <span class="spacer"></span>
-      <button mat-button routerLink="/signup" routerLinkActive="active">Register</button>
-      <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
-    </mat-toolbar>
-</div>
+<!-- Public Navigation (Not Logged In) -->
+<nav *ngIf="!isLoggedIn" class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo/Brand -->
+      <div class="flex items-center">
+        <div class="flex-shrink-0 flex items-center">
+          <div class="h-8 w-8 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+          </div>
+          <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            Tudu
+          </span>
+        </div>
+      </div>
 
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a
+            routerLink="/signup"
+            routerLinkActive="bg-purple-100 text-purple-700"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200"
+          >
+            Register
+          </a>
+          <a
+            routerLink="/login"
+            class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+          >
+            Login
+          </a>
+        </div>
+      </div>
 
-<div *ngIf="isAdminLoggedIn">
-  <mat-toolbar class="navbar">
-    <span class="navbar-brand">Admin</span>
-    <span class="spacer"></span>
-    <button mat-button routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</button>
-    <button mat-button routerLink="/admin/task" routerLinkActive="active">Post Task</button>
-    <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
-  </mat-toolbar>
-</div>
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          (click)="toggleMobileMenu()"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-purple-600 hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-<div *ngIf="isEmployeeLoggedIn">
-  <mat-toolbar class="navbar">
-    <span class="navbar-brand">Employee</span>
-    <span class="spacer"></span>
-    <button mat-button routerLink="/employee/dashboard" routerLinkActive="active">Dashboard</button>
-    <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
-  </mat-toolbar>
-</div>
+    <!-- Mobile Navigation Menu -->
+    <div *ngIf="isMobileMenuOpen" class="md:hidden border-t border-gray-200 bg-white">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a
+          routerLink="/signup"
+          routerLinkActive="bg-purple-100 text-purple-700"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+        >
+          Register
+        </a>
+        <a
+          routerLink="/login"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-md text-base font-medium bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 transition-all duration-200"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
 
+<!-- Admin Navigation -->
+<nav *ngIf="isAdminLoggedIn" class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo/Brand -->
+      <div class="flex items-center">
+        <div class="flex-shrink-0 flex items-center">
+          <div class="h-8 w-8 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold text-gray-900">Tudu Admin</span>
+            <span class="text-xs text-purple-600 font-medium">Administrator Panel</span>
+          </div>
+        </div>
+      </div>
 
-<router-outlet></router-outlet>
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-center space-x-4">
+          <a
+            routerLink="/admin/dashboard"
+            routerLinkActive="bg-purple-100 text-purple-700 border-purple-200"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 border border-transparent transition-all duration-200"
+          >
+            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+            </svg>
+            Dashboard
+          </a>
+          <a
+            routerLink="/admin/task"
+            routerLinkActive="bg-purple-100 text-purple-700 border-purple-200"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 border border-transparent transition-all duration-200"
+          >
+            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Post Task
+          </a>
+          <button
+            (click)="logout()"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 border border-transparent transition-all duration-200"
+          >
+            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            Logout
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          (click)="toggleMobileMenu()"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-purple-600 hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div *ngIf="isMobileMenuOpen" class="md:hidden border-t border-gray-200 bg-white">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive="bg-purple-100 text-purple-700"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+        >
+          <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+          </svg>
+          Dashboard
+        </a>
+        <a
+          routerLink="/admin/task"
+          routerLinkActive="bg-purple-100 text-purple-700"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+        >
+          <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Post Task
+        </a>
+        <button
+          (click)="logout()"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors"
+        >
+          <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Employee Navigation -->
+<nav *ngIf="isEmployeeLoggedIn" class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo/Brand -->
+      <div class="flex items-center">
+        <div class="flex-shrink-0 flex items-center">
+          <div class="h-8 w-8 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg flex items-center justify-center mr-3">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold text-gray-900">Tudu Employee</span>
+            <span class="text-xs text-blue-600 font-medium">Employee Portal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-center space-x-4">
+          <a
+            routerLink="/employee/dashboard"
+            routerLinkActive="bg-blue-100 text-blue-700 border-blue-200"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 border border-transparent transition-all duration-200"
+          >
+            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+            </svg>
+            Dashboard
+          </a>
+          <button
+            (click)="logout()"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 border border-transparent transition-all duration-200"
+          >
+            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            Logout
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          (click)="toggleMobileMenu()"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div *ngIf="isMobileMenuOpen" class="md:hidden border-t border-gray-200 bg-white">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a
+          routerLink="/employee/dashboard"
+          routerLinkActive="bg-blue-100 text-blue-700"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+        >
+          <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+          </svg>
+          Dashboard
+        </a>
+        <button
+          (click)="logout()"
+          class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors"
+        >
+          <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gray-50">
+  <router-outlet></router-outlet>
+</main>

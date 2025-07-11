@@ -1,13 +1,4 @@
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-}
-
-* {
-    box-sizing: border-box; /* Ensure padding/margin doesn't affect width/height */
-}
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

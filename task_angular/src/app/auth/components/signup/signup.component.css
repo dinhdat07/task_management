@@ -1,110 +1,128 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  mat-card {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-
-    @media screen and (max-width: 500px) {
-      max-width: 10px;
-    }
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  mat-card-title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #673ab7;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  mat-form-field {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    width: 100%;
-  }
-  
-  @media (max-width: 500px) {
-    mat-card-title {
-      font-size: 20px;
-    }
-
-    mat-form-field {
-      margin-bottom: 10px;
-    }
-  }
-
-  .error-snakbar {
-    background-color: #d32f2f !important;
-  }
-
-  mat-icon {
-    display: inline-block;
-    line-height: 0;
-    vertical-align: middle;
-    font-size: 24px;
+/* Custom styles for Angular Material Snackbar */
+::ng-deep .success-snackbar {
+  background-color: #10b981 !important;
+  color: white !important;
 }
 
-
-
-.signup-container {
-  display: flex;
-  height: 100vh;
+::ng-deep .success-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
 }
 
-
-.signup-left {
-  flex: 1;
-  background: linear-gradient(to bottom right, #673ab7, #ffc107); /* Deep Purple to Amber */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  text-align: center;
-  color: white; /* Ensure text is visible on the gradient */
+::ng-deep .error-snackbar {
+  background-color: #ef4444 !important;
+  color: white !important;
 }
 
-.signup-left .logo {
-  max-width: 150px;
-  margin-bottom: 1rem;
+::ng-deep .error-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
 }
 
-.signup-left h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+/* Ensure proper backdrop blur support */
+@supports (backdrop-filter: blur(12px)) {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(12px);
+  }
 }
 
-.signup-left p {
-  font-size: 1rem;
-  margin: 0 1rem;
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-
-.signup-right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  background-color: #ffffff;
+.bg-white {
+  animation: fadeInUp 0.6s ease-out;
 }
 
-mat-card {
-  width: 100%;
-  max-width: 400px;
+/* Focus styles for better accessibility */
+input:focus,
+button:focus {
+  outline: none;
+}
+
+/* Custom checkbox styles */
+input[type="checkbox"]:checked {
+  background-color: #7c3aed;
+  border-color: #7c3aed;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+    transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Password strength indicator animations */
+.password-strength-bar {
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .rounded-3xl {
+    border-radius: 1.5rem;
+  }
+
+  .p-8 {
+    padding: 1.5rem;
+  }
+
+  .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+}
+
+/* Form validation states */
+.form-input-success {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.form-input-success:focus {
+  ring-color: #10b981;
+}
+
+/* Enhanced hover effects */
+.social-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom scrollbar for mobile */
+@media (max-width: 768px) {
+  .overflow-y-auto::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+  }
 }
