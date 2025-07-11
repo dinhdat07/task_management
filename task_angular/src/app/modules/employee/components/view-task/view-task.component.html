@@ -1,60 +1,186 @@
-<div *ngIf="taskData" class="card-container">
-    <div class="task-list" *ngIf="taskData">
-        <mat-card class="task-card">
-          <div class="task-details">
-            <h2 class="task-name">{{ taskData.title }}</h2>
-            <p class="task-description">{{ taskData.description }}</p>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="task-info">
-            <div class="info-row">
-              <span class="info-label">Due Date:</span>
-              <span class="info-value">{{ taskData.dueDate | date: 'MMM d, y' }}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Employee:</span>
-              <span class="info-value">{{ taskData.employeeName }}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Priority:</span>
-              <span class="info-value">{{ taskData.priority }}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Status:</span>
-              <span class="info-value">{{ taskData.taskStatus }}</span>
-            </div>
-          </div>
-        </mat-card>
-    </div>
-  
-    <mat-card class="comment-card">
-      <mat-card-content>
-        <h4>Post your comment</h4>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+  <!-- Header Section -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center">
+        <button
+          onclick="history.back()"
+          class="mr-4 p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
         <div>
-          <form [formGroup]="commentForm">
-            <mat-form-field appearance="fill">
-              <mat-label>Content</mat-label>
-              <textarea matInput formControlName="content"></textarea>
-            </mat-form-field>
-            <button mat-raised-button color="primary" style="float: right;" [disabled]="!commentForm.valid" (click)="postComment()">Post Comment</button>
+          <h1 class="text-3xl font-bold text-gray-900">Task Details</h1>
+          <p class="text-gray-600 mt-1">View task information and manage comments</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <span class="ml-3 text-gray-600">Loading task details...</span>
+    </div>
+
+    <!-- Task Details Card -->
+    <div *ngIf="!isLoading && taskData" class="space-y-8">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Task Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-white">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <h2 class="text-2xl font-bold mb-2">{{ taskData.title }}</h2>
+              <p class="text-blue-100 text-lg">{{ taskData.description }}</p>
+            </div>
+            <div class="flex flex-col space-y-2 ml-6">
+              <span [class]="'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border bg-white ' + getPriorityColor(taskData.priority)">
+                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getPriorityIcon(taskData.priority)"></path>
+                </svg>
+                {{ taskData.priority }}
+              </span>
+              <span [class]="'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border bg-white ' + getStatusColor(taskData.taskStatus)">
+                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getStatusIcon(taskData.taskStatus)"></path>
+                </svg>
+                {{ taskData.taskStatus }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Information -->
+        <div class="px-6 py-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+              <div class="flex-shrink-0">
+                <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V7a2 2 0 012-2h4a2 2 0 012 2v0M8 7v10a2 2 0 002 2h4a2 2 0 002-2V7"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Due Date</p>
+                <p class="text-lg font-semibold text-gray-900">{{ taskData.dueDate | date: 'MMM d, y' }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+              <div class="flex-shrink-0">
+                <div class="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Assigned To</p>
+                <p class="text-lg font-semibold text-gray-900">{{ taskData.employeeName }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+            <svg class="h-5 w-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            Comments ({{ listOfComments.length }})
+          </h3>
+        </div>
+
+        <!-- Add Comment Form -->
+        <div class="px-6 py-6 border-b border-gray-200 bg-gray-50">
+          <form [formGroup]="commentForm" (ngSubmit)="postComment()" class="space-y-4">
+            <div>
+              <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">
+                Add a comment
+              </label>
+              <div class="relative">
+                <textarea
+                  id="comment"
+                  formControlName="content"
+                  rows="4"
+                  placeholder="Share your thoughts or updates about this task..."
+                  class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                  [class.border-red-500]="contentErrors"
+                  [class.focus:ring-red-500]="contentErrors"
+                ></textarea>
+              </div>
+              <div *ngIf="contentErrors" class="mt-1 flex items-center text-sm text-red-600">
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                {{ contentErrors }}
+              </div>
+            </div>
+            
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                [disabled]="commentForm.invalid || isSubmittingComment"
+                class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+              >
+                <span *ngIf="!isSubmittingComment" class="flex items-center">
+                  <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                  </svg>
+                  Post Comment
+                </span>
+                <span *ngIf="isSubmittingComment" class="flex items-center">
+                  <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Posting...
+                </span>
+              </button>
+            </div>
           </form>
         </div>
-      </mat-card-content>
-    </mat-card>
-  
-    <div style="margin-top: 10px;">
-      <h4>Comments</h4>
-      <mat-card *ngFor="let comment of listOfComments" style="margin-top: 10px;">
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>{{ comment.postedBy }}</mat-card-title>
-          <mat-card-subtitle>{{ comment.createdAt | date: 'medium' }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          {{ comment.content }}
-        </mat-card-content>
-      </mat-card>
+
+        <!-- Comments List -->
+        <div class="px-6 py-6">
+          <div *ngIf="listOfComments.length === 0" class="text-center py-8">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No comments yet</h3>
+            <p class="mt-1 text-sm text-gray-500">Be the first to share your thoughts about this task.</p>
+          </div>
+
+          <div *ngIf="listOfComments.length > 0" class="space-y-6">
+            <div *ngFor="let comment of listOfComments; let i = index" class="flex space-x-4">
+              <!-- Avatar -->
+              <div class="flex-shrink-0">
+                <div class="h-10 w-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-medium text-sm">{{ comment.postedBy.charAt(0).toUpperCase() }}</span>
+                </div>
+              </div>
+
+              <!-- Comment Content -->
+              <div class="flex-1 min-w-0">
+                <div class="bg-gray-50 rounded-lg px-4 py-3">
+                  <div class="flex items-center justify-between mb-2">
+                    <h4 class="text-sm font-semibold text-gray-900">{{ comment.postedBy }}</h4>
+                    <time class="text-xs text-gray-500">{{ comment.createdAt | date: 'MMM d, y \'at\' h:mm a' }}</time>
+                  </div>
+                  <p class="text-sm text-gray-700 leading-relaxed">{{ comment.content }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    
   </div>
+</div>
