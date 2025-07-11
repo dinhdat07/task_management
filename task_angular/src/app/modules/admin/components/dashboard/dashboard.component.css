@@ -1,88 +1,256 @@
-.search-form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    
-    .search-input {
-        width: 50%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        margin-right: 15px;
-    }
+/* Custom styles for admin dashboard */
 
-    input {
-        padding-right: 40px;
-    }
-
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+    transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
-.task-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background-color: #f8f8f8;
-    min-height: 37vh;
-    padding: 20px;
-  
-    .task-card {
-        width: calc(33.33% - 20px);
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
-    
-    .task-details {
-        padding: 20px;
-    }
-    
-    .task-name {
-        font-size: 20px;
-        font-weight: bold;
-        color: #108ee9;
-        margin-bottom: 10px;
-    }
-    
-    .task-description {
-        margin-bottom: 10px;
-    }
-    
-    .task-info {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 10px;
-        margin-top: 10px;
-        .info-row {
-            flex: 0 0 50%;
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-          
-            .info-label {
-                font-weight: 10px;
-                margin-right: 5px;
-            }
-            
-            .info-value {
-                font-weight: bold;
-            }
-        }
-
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-
-            .update-button {
-                margin-right: 10px;
-            }
-
-            .view-button {
-                margin-right: 10px;
-            }
-        }
-    }
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-  
-  
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+}
+
+/* Card hover animations */
+.task-card {
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Button hover effects */
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Stats card animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Search input focus effects */
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* Custom badge animations */
+.badge {
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* Success snackbar */
+::ng-deep .success-snackbar {
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+::ng-deep .success-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
+}
+
+/* Error snackbar */
+::ng-deep .error-snackbar {
+  background-color: #ef4444 !important;
+  color: white !important;
+}
+
+::ng-deep .error-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
+}
+
+/* Admin theme colors */
+.admin-primary {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+.admin-secondary {
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+}
+
+/* Priority indicators */
+.priority-high {
+  border-left: 4px solid #ef4444;
+}
+
+.priority-medium {
+  border-left: 4px solid #f59e0b;
+}
+
+.priority-low {
+  border-left: 4px solid #10b981;
+}
+
+/* Status indicators */
+.status-completed {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.status-inprogress {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.status-deferred {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.status-cancelled {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .task-card {
+    margin-bottom: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .tasks-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+a:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #8b5cf6;
+  ring-offset: 2px;
+}
+
+/* Custom gradient backgrounds */
+.gradient-bg-admin {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+}
+
+/* Hover effects for action buttons */
+.action-btn {
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Delete confirmation animation */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.delete-confirm {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Task card priority border */
+.task-card-high {
+  border-left: 4px solid #ef4444;
+}
+
+.task-card-medium {
+  border-left: 4px solid #f59e0b;
+}
+
+.task-card-low {
+  border-left: 4px solid #10b981;
+}
+
+/* Admin header gradient */
+.admin-header {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+/* Stats card hover effects */
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+}

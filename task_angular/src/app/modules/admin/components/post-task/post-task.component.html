@@ -1,65 +1,278 @@
-<div class="container">
-    <h2>Post Task</h2>
-    <form [formGroup]="taskForm" (ngSubmit)="postTask()">
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 py-12">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="mx-auto h-16 w-16 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Create New Task</h1>
+      <p class="text-gray-600">Assign a new task to your team members</p>
+    </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Title</mat-label>
-            <input matInput type="text" formControlName="title" placeholder = "Title">
-            <mat-error *ngIf="taskForm.get('title')?.hasError('required')">
-                Title is required!</mat-error>
-        </mat-form-field>
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+      <!-- Form Header -->
+      <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4">
+        <h2 class="text-xl font-semibold text-white">Task Details</h2>
+        <p class="text-purple-100 text-sm mt-1">Fill in the information below to create a new task</p>
+      </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Description</mat-label>
-            <input matInput type="text" formControlName="description" placeholder = "Description">
-            <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
-                Description is required!</mat-error>
-        </mat-form-field>
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+        <span class="ml-3 text-gray-600">Loading employees...</span>
+      </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Due Date</mat-label>
-            <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" placeholder="Choose a due Date">
-            <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #dueDatePicker></mat-datepicker>
-            <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
-                Due date is required!</mat-error>
-        </mat-form-field>
+      <!-- Form -->
+      <form *ngIf="!isLoading" [formGroup]="taskForm" (ngSubmit)="postTask()" class="p-6 space-y-6">
+        <!-- Title Field -->
+        <div class="space-y-2">
+          <label for="title" class="block text-sm font-semibold text-gray-700">
+            Task Title *
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <input
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Enter task title"
+              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
+              [class.border-red-500]="titleErrors"
+              [class.focus:ring-red-500]="titleErrors"
+              [class.bg-red-50]="titleErrors"
+            >
+          </div>
+          <div *ngIf="titleErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ titleErrors }}
+          </div>
+        </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Priority</mat-label>
-            <mat-select formControlName="priority" name="priority">
-                <mat-option *ngFor="let p of listOfPriorities" [value]="p">
-                    {{p}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="taskForm.get('priority')?.hasError('required')">
-                Priority is required!</mat-error>
-        </mat-form-field>
+        <!-- Description Field -->
+        <div class="space-y-2">
+          <label for="description" class="block text-sm font-semibold text-gray-700">
+            Description *
+          </label>
+          <div class="relative">
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="4"
+              placeholder="Describe the task in detail..."
+              class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
+              [class.border-red-500]="descriptionErrors"
+              [class.focus:ring-red-500]="descriptionErrors"
+              [class.bg-red-50]="descriptionErrors"
+            ></textarea>
+          </div>
+          <div *ngIf="descriptionErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ descriptionErrors }}
+          </div>
+        </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Task Status</mat-label>
-            <mat-select formControlName="taskStatus" name="taskStatus">
-                <mat-option *ngFor="let s of listOfTaskStatus" [value]="s">
-                    {{s}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="taskForm.get('status')?.hasError('required')">
-                Task status is required!</mat-error>
-        </mat-form-field>
+        <!-- Due Date Field -->
+        <div class="space-y-2">
+          <label for="dueDate" class="block text-sm font-semibold text-gray-700">
+            Due Date *
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V7a2 2 0 012-2h4a2 2 0 012 2v0M8 7v10a2 2 0 002 2h4a2 2 0 002-2V7"></path>
+              </svg>
+            </div>
+            <input
+              id="dueDate"
+              type="date"
+              formControlName="dueDate"
+              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
+              [class.border-red-500]="dueDateErrors"
+              [class.focus:ring-red-500]="dueDateErrors"
+              [class.bg-red-50]="dueDateErrors"
+            >
+          </div>
+          <div *ngIf="dueDateErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ dueDateErrors }}
+          </div>
+        </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Employee</mat-label>
-            <mat-select formControlName="employeeId" name="employeeId">
-                <mat-option *ngFor="let employee of listOfEmployees" [value]="employee.id">
-                    {{employee.name}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="taskForm.get('employeeId')?.hasError('required')">
-                Employee is required!</mat-error>
-        </mat-form-field>
+        <!-- Priority and Status Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Priority Field -->
+          <div class="space-y-2">
+            <label for="priority" class="block text-sm font-semibold text-gray-700">
+              Priority *
+            </label>
+            <div class="relative">
+              <select
+                id="priority"
+                formControlName="priority"
+                class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white appearance-none"
+                [class.border-red-500]="priorityErrors"
+                [class.focus:ring-red-500]="priorityErrors"
+                [class.bg-red-50]="priorityErrors"
+              >
+                <option value="">Select Priority</option>
+                <option *ngFor="let priority of listOfPriorities" [value]="priority">
+                  {{ priority }}
+                </option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+            <div *ngIf="priorityErrors" class="flex items-center text-sm text-red-600 mt-1">
+              <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              {{ priorityErrors }}
+            </div>
+          </div>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">
-            Post Task
-        </button>
-    </form>
+          <!-- Task Status Field -->
+          <div class="space-y-2">
+            <label for="taskStatus" class="block text-sm font-semibold text-gray-700">
+              Initial Status *
+            </label>
+            <div class="relative">
+              <select
+                id="taskStatus"
+                formControlName="taskStatus"
+                class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white appearance-none"
+                [class.border-red-500]="taskStatusErrors"
+                [class.focus:ring-red-500]="taskStatusErrors"
+                [class.bg-red-50]="taskStatusErrors"
+              >
+                <option *ngFor="let status of listOfTaskStatus" [value]="status">
+                  {{ status }}
+                </option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+            <div *ngIf="taskStatusErrors" class="flex items-center text-sm text-red-600 mt-1">
+              <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              {{ taskStatusErrors }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Employee Assignment Field -->
+        <div class="space-y-2">
+          <label for="employeeId" class="block text-sm font-semibold text-gray-700">
+            Assign to Employee *
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <select
+              id="employeeId"
+              formControlName="employeeId"
+              class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white appearance-none"
+              [class.border-red-500]="employeeIdErrors"
+              [class.focus:ring-red-500]="employeeIdErrors"
+              [class.bg-red-50]="employeeIdErrors"
+            >
+              <option value="">Select Employee</option>
+              <option *ngFor="let employee of listOfEmployees" [value]="employee.id">
+                {{ employee.name }}
+              </option>
+            </select>
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+          <div *ngIf="employeeIdErrors" class="flex items-center text-sm text-red-600 mt-1">
+            <svg class="h-4 w-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ employeeIdErrors }}
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+          <button
+            type="button"
+            routerLink="/admin/dashboard"
+            class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
+          >
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Cancel
+          </button>
+          
+          <button
+            type="submit"
+            [disabled]="taskForm.invalid || isSubmitting"
+            class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            <span *ngIf="!isSubmitting" class="flex items-center">
+              <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              Create Task
+            </span>
+            <span *ngIf="isSubmitting" class="flex items-center">
+              <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Creating Task...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Help Section -->
+    <div class="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-blue-800">Task Creation Tips</h3>
+          <div class="mt-2 text-sm text-blue-700">
+            <ul class="list-disc list-inside space-y-1">
+              <li>Write clear and specific task titles</li>
+              <li>Provide detailed descriptions to avoid confusion</li>
+              <li>Set realistic due dates considering employee workload</li>
+              <li>Choose appropriate priority levels based on business impact</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
